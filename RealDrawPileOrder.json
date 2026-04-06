@@ -2,10 +2,12 @@
   "id": "RealDrawPileOrder",
   "name": "RealDrawPileOrder",
   "author": "KokomiSensei",
-  "description": "Slay the Spire 2 mod created from a template for use with BaseLib",
-  "version": "v0.0.0",
+  "description": "Allow you to open the draw pile screen and see the actual draw order of the card within the draw pile. ",
+  "version": "v0.1.0",
   "has_pck": true,
   "has_dll": true,
-  "dependencies": ["BaseLib"],
+  "dependencies": [
+    "BaseLib"
+  ],
   "affects_gameplay": true
 }

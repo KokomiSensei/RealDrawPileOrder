@@ -1,5 +1,6 @@
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 
 namespace RealDrawPileOrder.RealDrawPileOrderCode;
@@ -9,7 +10,7 @@ namespace RealDrawPileOrder.RealDrawPileOrderCode;
 public partial class MainFile : Node {
     public const string ModId = "RealDrawPileOrder"; //At the moment, this is used only for the Logger and harmony names.
 
-    public static MegaCrit.Sts2.Core.Logging.Logger Logger { get; } = new(ModId, MegaCrit.Sts2.Core.Logging.LogType.Generic);
+    public static MegaCrit.Sts2.Core.Logging.Logger Logger { get; } = new(ModId, LogType.Generic);
 
     public static void Initialize() {
         Logger.Info(ModId + " is initializing!");
