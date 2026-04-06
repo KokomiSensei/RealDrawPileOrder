@@ -3,7 +3,7 @@
   "name": "RealDrawPileOrder",
   "author": "KokomiSensei",
   "description": "Allow you to open the draw pile screen and see the actual draw order of the card within the draw pile. ",
-  "version": "v0.1.0",
+  "version": "v0.0.1",
   "has_pck": true,
   "has_dll": true,
   "dependencies": [
