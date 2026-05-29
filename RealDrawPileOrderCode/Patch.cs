@@ -1,18 +1,21 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Screens;
 using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace RealDrawPileOrder.RealDrawPileOrderCode;
 
 [HarmonyPatch(typeof(NCardPileScreen), "OnPileContentsChanged")]
-public static class TargetClass_MethodName_Patch {
+public static class NCardPileScreen_OnPileContentsChanged_Patch {
 
     static readonly AccessTools.FieldRef<NCardPileScreen, NCardGrid> _gridRef = AccessTools.FieldRefAccess<NCardPileScreen, NCardGrid>("_grid");
 
@@ -53,4 +56,25 @@ public static class TargetClass_MethodName_Patch {
         return runOriginal;
     }
 
+}
+
+[HarmonyPatch(typeof(MegaCrit.Sts2.Core.Commands.CardSelectCmd), "FromSimpleGrid")]
+public static class CardSelectCmd_FromSimpleGrid_Patch {
+
+
+    static void Prefix(ref IReadOnlyList<CardModel> cardsIn, Player player) {
+        if (cardsIn == null || cardsIn.Count <= 1 || player == null) return;
+
+        var drawPile = PileType.Draw.GetPile(player);
+        // If the "carsIn" is "draw pile cards"
+        if (drawPile != null && cardsIn.All(c => drawPile.Cards.Contains(c))) {
+            var lookup = new Dictionary<CardModel, int>();
+            int i = 0;
+            foreach (var card in drawPile.Cards) {
+                if (!lookup.ContainsKey(card)) lookup[card] = i;
+                i++;
+            }
+            cardsIn = cardsIn.OrderBy(c => lookup.ContainsKey(c) ? lookup[c] : int.MaxValue).ToList();
+        }
+    }
 }
